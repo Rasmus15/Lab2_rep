@@ -154,3 +154,5 @@ C:\Plugg_år_3\Datorgrafik\Lab2\Kod\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
 C:\Plugg_år_3\Datorgrafik\Lab2\Kod\bin\Windows\x86\Debug\SharpDX.XInput.xml
 C:\Plugg_år_3\Datorgrafik\Lab2\Kod\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 C:\Plugg_år_3\Datorgrafik\Lab2\Kod\obj\x86\Debug\Series3D1.csprojResolveAssemblyReference.cache
+C:\Plugg_år_3\Datorgrafik\Lab2\Lab2_rep\Kod\obj\x86\Debug\Series3D1.exe
+C:\Plugg_år_3\Datorgrafik\Lab2\Lab2_rep\Kod\obj\x86\Debug\Series3D1.pdb
