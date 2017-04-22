@@ -9,15 +9,24 @@ namespace Series3D1.Components
 {
     class CameraComponent : IComponent
     {
-        public Vector3 Movement { get; set; } 
+        #region Properties
+        public float FOV { get; set; }
+        public float NearPlane { get; set; }
+        public float FarPlane { get; set; }
+        public float Ratio { get; set; }
         public Matrix View { get; set; }
         public Matrix Proj { get; set; }
+        #endregion
 
-        public CameraComponent(Vector3 mov, Matrix view, Matrix proj)
+        public CameraComponent(float fov, float nearPlane, float farPlane, float ratio)
         {
-            Movement = mov;
-            View = view;
-            Proj = proj;
+            FOV = fov;
+            NearPlane = nearPlane;
+            FarPlane = farPlane;
+            Ratio = ratio;
+        
+            View = Matrix.Identity;
+            Proj = Matrix.Identity;
         }
     }
 }

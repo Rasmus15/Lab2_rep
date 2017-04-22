@@ -4,13 +4,13 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Plugg_år_3/Datorgrafik/Lab2/Kod/Content/US_Canyon.png</File>
-    <File>C:/Plugg_år_3/Datorgrafik/Lab2/Kod/Content/OurTexture.jpg</File>
-    <File>C:/Plugg_år_3/Datorgrafik/Lab2/Kod/Content/OurHeightMap.jpg</File>
-    <File>C:/Plugg_år_3/Datorgrafik/Lab2/Kod/Content/mntn_canyon_d.jpg</File>
-    <File>C:/Plugg_år_3/Datorgrafik/Lab2/Kod/Content/desert_mntn2_h.jpg</File>
-    <File>C:/Plugg_år_3/Datorgrafik/Lab2/Kod/Content/desert_sand_big_d.jpg</File>
-    <File>C:/Plugg_år_3/Datorgrafik/Lab2/Kod/Content/adesert_mntn_d.jpg</File>
-    <File>C:/Plugg_år_3/Datorgrafik/Lab2/Kod/Content/Chopper.fbx</File>
+    <File>D:/Plugg_År_3/Datorgrafik/Labbar/Lab2/Lab2_rep/Kod/Content/US_Canyon.png</File>
+    <File>D:/Plugg_År_3/Datorgrafik/Labbar/Lab2/Lab2_rep/Kod/Content/OurTexture.jpg</File>
+    <File>D:/Plugg_År_3/Datorgrafik/Labbar/Lab2/Lab2_rep/Kod/Content/OurHeightMap.jpg</File>
+    <File>D:/Plugg_År_3/Datorgrafik/Labbar/Lab2/Lab2_rep/Kod/Content/mntn_canyon_d.jpg</File>
+    <File>D:/Plugg_År_3/Datorgrafik/Labbar/Lab2/Lab2_rep/Kod/Content/desert_mntn2_h.jpg</File>
+    <File>D:/Plugg_År_3/Datorgrafik/Labbar/Lab2/Lab2_rep/Kod/Content/desert_sand_big_d.jpg</File>
+    <File>D:/Plugg_År_3/Datorgrafik/Labbar/Lab2/Lab2_rep/Kod/Content/adesert_mntn_d.jpg</File>
+    <File>D:/Plugg_År_3/Datorgrafik/Labbar/Lab2/Lab2_rep/Kod/Content/Chopper.fbx</File>
   </SourceFiles>
 </SourceFileCollection>

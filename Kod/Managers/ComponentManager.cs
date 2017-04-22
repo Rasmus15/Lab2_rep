@@ -39,7 +39,7 @@ namespace Series3D1.Managers
             List<Entity> temp = new List<Entity>();
             Type type = typeof(T);
             if (!components.ContainsKey(type))
-                return null;
+                return temp;
             foreach(KeyValuePair<Entity, IComponent> pair in components[type])
             {
                 temp.Add(pair.Key);
@@ -54,7 +54,7 @@ namespace Series3D1.Managers
                 return null;
             if (components[type].ContainsKey(entity))
                 return (T)components[type][entity];
-            return null;
+            return default(T);
         }
         public List<T> GetAllSpecComponents<T>() where T : class, IComponent
         {
@@ -80,6 +80,14 @@ namespace Series3D1.Managers
                 }
             }
             return null;
+        }
+
+        public bool CheckEntityHasComponent<T>(Entity ent) where T : class, IComponent
+        {
+            Type type = typeof(T);
+            if (!components.ContainsKey(type))
+                return false;
+            return components[type].ContainsKey(ent);
         }
     }
 }

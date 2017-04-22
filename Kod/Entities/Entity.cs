@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Series3D1.Entities
 {
-    class Entity
+    public class Entity
     {
         public bool IsVisible { get; set; }
 

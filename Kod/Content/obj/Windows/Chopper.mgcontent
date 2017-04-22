@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Plugg_år_3/Datorgrafik/Lab2/Kod/Content/Chopper.fbx</SourceFile>
-  <SourceTime>2017-03-29T06:14:48+02:00</SourceTime>
-  <DestFile>C:/Plugg_år_3/Datorgrafik/Lab2/Kod/Content/bin/Windows/Chopper.xnb</DestFile>
-  <DestTime>2017-04-16T20:25:17.0487437+02:00</DestTime>
+  <SourceFile>D:/Plugg_År_3/Datorgrafik/Labbar/Lab2/Lab2_rep/Kod/Content/Chopper.fbx</SourceFile>
+  <SourceTime>2017-04-17T15:45:48.4350751+02:00</SourceTime>
+  <DestFile>D:/Plugg_År_3/Datorgrafik/Labbar/Lab2/Lab2_rep/Kod/Content/bin/Windows/Chopper.xnb</DestFile>
+  <DestTime>2017-04-21T16:38:59.7627649+02:00</DestTime>
   <Importer>FbxImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>ModelProcessor</Processor>

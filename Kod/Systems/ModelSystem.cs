@@ -11,43 +11,44 @@ using Series3D1.Entities;
 
 namespace Series3D1.Systems
 {
-    class ModelSystem : IDraw, ILoadContent
+    class ModelSystem : IDraw
     {
-        public void LoadContent()
+        //public void LoadContent()
+        //{
+        //    Entity modEntity = ComponentManager.Instance.GetEntityWithTag("chopper", SceneManager.Instance.GetActiveSceneEntities());
+        //    ModelComponent modComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(modEntity);
+        //    foreach (ModelMesh mm in modComp.Model.Meshes)
+        //    {
+        //        foreach (Effect e in mm.Effects)
+        //        {
+        //            IEffectLights ieLight = e as IEffectLights;
+        //            if (ieLight != null)
+        //            {
+        //                ieLight.EnableDefaultLighting();
+        //            }
+
+        //        }
+        //    }
+        //}
+
+        private void DrawModelViaMeshes(TransformComponent transcomp, ModelComponent mComp, Matrix proj, Matrix view)
         {
-            Entity modEntity = ComponentManager.Instance.GetEntityWithTag("chopper", SceneManager.Instance.GetActiveSceneEntities());
-            ModelComponent modComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(modEntity);
-            foreach (ModelMesh mm in modComp.Model.Meshes)
+            foreach (ModelMesh mesh in mComp.Model.Meshes)
             {
-                foreach (Effect e in mm.Effects)
+                foreach (BasicEffect e in mesh.Effects)
                 {
-                    IEffectLights ieLight = e as IEffectLights;
-                    if (ieLight != null)
+                    HeightmapComponent hc = ComponentManager.Instance.GetEntityComponent<HeightmapComponent>(ComponentManager.Instance.GetEntityWithTag("heightmap", SceneManager.Instance.GetActiveSceneEntities()));
+                    e.World = mComp.MeshMatrices[mesh.ParentBone.Index] * transcomp.CalcMatrix * hc.World;
+                    e.Projection = proj;
+                    e.View = view;
+                    e.EnableDefaultLighting();
+                    e.PreferPerPixelLighting = true;
+                    foreach (EffectPass pass in e.CurrentTechnique.Passes)
                     {
-                        ieLight.EnableDefaultLighting();
-                    }
-
-                }
-            }
-        }
-
-        private void DrawModelViaMeshes(Model m, float radius, Matrix proj, Matrix view)
-        {
-            Matrix world = Matrix.CreateScale(1.0f / radius);
-            foreach (ModelMesh mesh in m.Meshes)
-            {
-                foreach (Effect e in mesh.Effects)
-                {
-                    IEffectMatrices iEffectMatrices = e as IEffectMatrices;
-                    if (iEffectMatrices != null)
-                    {
-                        iEffectMatrices.World = GetParentTransform(m, mesh.ParentBone) * world;
-                        iEffectMatrices.Projection = proj;
-                        iEffectMatrices.View = view;
+                        pass.Apply();
+                        mesh.Draw();
                     }
                 }
-                mesh.Draw();
-
             }
         }
 
@@ -61,7 +62,7 @@ namespace Series3D1.Systems
         {
             m.Draw(Matrix.CreateScale(1.0f / radius), view, proj);
         }
-        //by the book
+
         private float GetMaxMeshRadius(Model m)
         {
             float radius = 0.0f;
@@ -81,20 +82,12 @@ namespace Series3D1.Systems
             foreach (Entity ent in entities)
             {
                 ModelComponent modelComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(ent);
-
+                CameraComponent camComp = ComponentManager.Instance.GetEntityComponent<CameraComponent>(ent);
+                TransformComponent transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ent);
+                modelComp.Model.CopyAbsoluteBoneTransformsTo(modelComp.MeshMatrices);
+                DrawModelViaMeshes(transComp, modelComp, camComp.Proj, camComp.View);
             }
-            Entity modEntity = ComponentManager.Instance.GetEntityWithTag("chopper", SceneManager.Instance.GetActiveSceneEntities());
-            ModelComponent modComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(modEntity);
-
-            spriteBatch.GraphicsDevice.Clear(Color.CornflowerBlue);
-            //by the book
-            float radius = GetMaxMeshRadius(modComp.Model);
-            Matrix proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, spriteBatch.GraphicsDevice.Viewport.AspectRatio, 1.0f, 100.0f);
-
-            Matrix view = Matrix.CreateLookAt(new Vector3(-1, 1, 5), Vector3.Zero, Vector3.Up);
-
-            // to get landscape viewable
-            DrawModel(modComp.Model, radius, proj, view);
+            spriteBatch.GraphicsDevice.Clear(Color.CornflowerBlue);   
         }
 
         public int Order()

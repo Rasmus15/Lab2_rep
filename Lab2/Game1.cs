@@ -14,7 +14,7 @@ namespace Series3D1
     /// </summary>
     public class Game1 : Game
     {
-         GraphicsDeviceManager graphics;
+        GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         public Game1()
@@ -38,8 +38,6 @@ namespace Series3D1
             graphics.ApplyChanges();
             Window.Title = "Test number uno :) ";
             // initialize camera start position
-
-            SystemManager.Instance.RegisterSystem("game", new KeyBoardSystem());
             SystemManager.Instance.RegisterSystem("game", new TransformSystem());
             SystemManager.Instance.RegisterSystem("game", new CameraSystem());
             SystemManager.Instance.RegisterSystem("game", new ModelSystem());
@@ -63,22 +61,26 @@ namespace Series3D1
         }
         public void AddEntitiesAndComponents()
         {
-            SystemManager.Instance.ActiveCategory = "game";
-            SceneManager.Instance.ActiveScene = "game";
-            CameraComponent camComp = new CameraComponent(MathHelper.PiOver4, 1.0f, 1000.0f, 1.33f);
+
             Entity chopper = new Entity();
             SceneManager.Instance.AddEntityToScene("game", chopper);
             ComponentManager.Instance.AddComponentToEntity(chopper, new TagComponent("chopper"));
             ComponentManager.Instance.AddComponentToEntity(chopper, new ModelComponent(Content.Load<Model>("Chopper")));
-            TransformComponent tc = new TransformComponent(Vector3.Zero, Vector3.Zero, new Vector3(1, 1, 1));
-            ComponentManager.Instance.AddComponentToEntity(chopper, tc);
-            ComponentManager.Instance.AddComponentToEntity(chopper, camComp);
+            ComponentManager.Instance.AddComponentToEntity(chopper, new TransformComponent(Vector3.Zero, Vector3.Zero, Vector3.Zero));
+
+            Entity camera = new Entity();
+            Vector3 pos = new Vector3(-100, 0, 0);
+            SceneManager.Instance.AddEntityToScene("game", camera);
+            ComponentManager.Instance.AddComponentToEntity(camera, new TagComponent("camera"));
+            ComponentManager.Instance.AddComponentToEntity(camera, new CameraComponent(Matrix.CreateLookAt(new Vector3(-100, 0, 0), ComponentManager.Instance.GetEntityComponent<TransformComponent>
+                (ComponentManager.Instance.GetEntityWithTag("chopper", SceneManager.Instance.GetActiveSceneEntities())).Position, Vector3.Up), Matrix.CreatePerspective(1.2f, 0.9f, 1.0f, 1000.0f)));
+            ComponentManager.Instance.AddComponentToEntity(camera, new TransformComponent(pos, new Vector3(2, 2, 2) * 0.02f, new Vector3()));
 
             Entity heightmap = new Entity();
             SceneManager.Instance.AddEntityToScene("game", heightmap);
             ComponentManager.Instance.AddComponentToEntity(heightmap, new TagComponent("heightmap"));
             ComponentManager.Instance.AddComponentToEntity(heightmap, new HeightmapComponent(Content.Load<Texture2D>("US_Canyon"), Content.Load<Texture2D>("mntn_canyon_d"), graphics.GraphicsDevice));
-            ComponentManager.Instance.AddComponentToEntity(heightmap, new TransformComponent(new Vector3(-400, -200, 0), new Vector3(), new Vector3()));
+            ComponentManager.Instance.AddComponentToEntity(heightmap, new TransformComponent(new Vector3(0, -100, 256), new Vector3(), new Vector3()));
         }
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload

@@ -17,6 +17,13 @@ namespace Series3D1.Systems
         //method for getting out textures
         private void SetEffects(HeightmapComponent hmComp)
         {
+            foreach(Entity ent in ComponentManager.Instance.GetAllEntitiesWithCertainComp<CameraComponent>())
+            {
+                CameraComponent camComp = ComponentManager.Instance.GetEntityComponent<CameraComponent>(ent);
+                hmComp.Effect.View = camComp.View;
+                hmComp.Effect.Projection = camComp.Proj;
+            }
+            hmComp.Effect.World = hmComp.World;
             hmComp.Effect.FogEnabled = false;
 
             //ändra till false om man vill se trianglarna
@@ -106,7 +113,6 @@ namespace Series3D1.Systems
             SetHeights(hmComp);
             SetVertices(hmComp);
             SetIndices(hmComp);
-            SetEffects(hmComp);
         }
 
         public int Order()
