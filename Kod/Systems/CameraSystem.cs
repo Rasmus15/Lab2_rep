@@ -26,8 +26,11 @@ namespace Series3D1.Systems
             {
                 CameraComponent camComp = ComponentManager.Instance.GetEntityComponent<CameraComponent>(ent);
                 TransformComponent transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ent);
-                camComp.View = Matrix.CreateLookAt(transComp.Position + camComp.CameraOffset, transComp.Position, Vector3.Up);
-                camComp.Proj = Matrix.CreatePerspectiveFieldOfView(camComp.FOV, camComp.Ratio, camComp.NearPlane, camComp.FarPlane);
+                if (ComponentManager.Instance.CheckEntityHasComponent<ModelComponent>(ent))
+                {
+                    camComp.View = Matrix.CreateLookAt(transComp.Position + camComp.CameraOffset, transComp.Position, Vector3.Up);
+                    camComp.Proj = Matrix.CreatePerspectiveFieldOfView(camComp.FOV, camComp.Ratio, camComp.NearPlane, camComp.FarPlane);
+                }
             }
         }
 

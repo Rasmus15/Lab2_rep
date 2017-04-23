@@ -1,5 +1,5 @@
-﻿using Series3D1.Entities;
-using Series3D1.Enums;
+﻿using Microsoft.Xna.Framework.Input;
+using Series3D1.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,6 @@ namespace Series3D1.Components.Other
 {
     interface IAction
     {
-        void PerformAction(InteractiveKeys key, String entity);
+        void PerformAction(Keys key, String entity);
     }
 }

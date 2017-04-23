@@ -13,6 +13,8 @@ namespace Series3D1.Components
         public Model Model { get; set; }
         public Matrix[] MeshMatrices { get; set; }
 
+        //VertexBuffer modelVertexBuffer { get; set; }
+
         public ModelComponent(Model model)
         {
             Model = model;

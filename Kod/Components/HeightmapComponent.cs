@@ -19,9 +19,16 @@ namespace Series3D1.Components
         public int[] Indices { get; set; }
         public BasicEffect Effect { get; set; }
         public Matrix World { get; set; }
-        public float[,] heightMapData { get; set; } 
+        public float[,] heightMapData { get; set; }
+        public int Parts;
         #endregion
 
+        /// <summary>
+        /// Standard contructor
+        /// </summary>
+        /// <param name="heightmap"></param>
+        /// <param name="heightmapT"></param>
+        /// <param name="gd"></param>
         public HeightmapComponent(Texture2D heightmap, Texture2D heightmapT, GraphicsDevice gd)
         {
             HeightMap = heightmap;
@@ -30,6 +37,23 @@ namespace Series3D1.Components
             Effect = new BasicEffect(gd);
             Effect.Texture = heightmapT;
             World = Matrix.Identity;
+        }
+
+        /// <summary>
+        /// Contructor which also takes a world matrix as parameter
+        /// </summary>
+        /// <param name="heightmap"></param>
+        /// <param name="heightmapT"></param>
+        /// <param name="gd"></param>
+        public HeightmapComponent(Texture2D heightmap, Texture2D heightmapT, GraphicsDevice gd, int parts) 
+        {
+            HeightMap = heightmap;
+            Width = heightmap.Width;
+            Height = heightmap.Height;
+            Effect = new BasicEffect(gd);
+            Effect.Texture = heightmapT;
+            World = Matrix.Identity;
+            Parts = parts;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Series3D1
             graphics.PreferredBackBufferHeight = 800;
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
-            Window.Title = "Test number uno :) ";
+            Window.Title = "Game";
             // initialize camera start position
 
             SystemManager.Instance.RegisterSystem("game", new KeyBoardSystem());
@@ -66,13 +66,39 @@ namespace Series3D1
             SystemManager.Instance.ActiveCategory = "game";
             SceneManager.Instance.ActiveScene = "game";
             CameraComponent camComp = new CameraComponent(MathHelper.PiOver4, 1.0f, 1000.0f, 1.33f, new Vector3(0, 1, 10));
-            Entity chopper = new Entity();
-            SceneManager.Instance.AddEntityToScene("game", chopper);
-            ComponentManager.Instance.AddComponentToEntity(chopper, new TagComponent("chopper"));
-            ComponentManager.Instance.AddComponentToEntity(chopper, new ModelComponent(Content.Load<Model>("Chopper")));
+
+            Entity heightmap = new Entity();
+            ComponentManager.Instance.AddComponentToEntity(heightmap, new HeightmapComponent(Content.Load<Texture2D>("US_Canyon"), Content.Load<Texture2D>("mntn_canyon_d"), graphics.GraphicsDevice, 9));
             TransformComponent tc = new TransformComponent(Vector3.Zero, Vector3.Zero, new Vector3(1, 1, 1));
-            ComponentManager.Instance.AddComponentToEntity(chopper, tc);
-            ComponentManager.Instance.AddComponentToEntity(chopper, camComp);
+            ComponentManager.Instance.AddComponentToEntity(heightmap, tc);
+
+            for (int i= 0; i < 10; i++)
+            {
+                Entity house = new Entity();
+                SceneManager.Instance.AddEntityToScene("game", house);
+                ComponentManager.Instance.AddComponentToEntity(house, new TagComponent("house" + i));
+                ComponentManager.Instance.AddComponentToEntity(house, new ModelComponent(Content.Load<Model>("House")));
+                TransformComponent htc = new TransformComponent(Vector3.Zero, Vector3.Zero, new Vector3(1, 1, 1));
+                ComponentManager.Instance.AddComponentToEntity(house, tc);
+            }
+            for(int i=0; i < 20; i++)
+            {
+                Entity stone = new Entity();
+                SceneManager.Instance.AddEntityToScene("game", stone);
+                ComponentManager.Instance.AddComponentToEntity(stone, new TagComponent("stone" + i));
+                ComponentManager.Instance.AddComponentToEntity(stone, new ModelComponent(Content.Load<Model>("Stone")));
+                TransformComponent stc = new TransformComponent(Vector3.Zero, Vector3.Zero, new Vector3(1, 1, 1));
+                ComponentManager.Instance.AddComponentToEntity(stone, tc);
+            }
+            for(int i=0; i < 30; i++)
+            {
+                Entity tree = new Entity();
+                SceneManager.Instance.AddEntityToScene("game", tree);
+                ComponentManager.Instance.AddComponentToEntity(tree, new TagComponent("tree" + i));
+                ComponentManager.Instance.AddComponentToEntity(tree, new ModelComponent(Content.Load<Model>("Tree")));
+                TransformComponent ttc = new TransformComponent(Vector3.Zero, Vector3.Zero, new Vector3(1, 1, 1));
+                ComponentManager.Instance.AddComponentToEntity(tree, tc);
+            }
         }
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload

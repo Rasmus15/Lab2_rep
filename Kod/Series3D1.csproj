@@ -49,11 +49,11 @@
     <Compile Include="Components\TransformComponent.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Scene.cs" />
-    <Compile Include="Enums\InteractiveKeys.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Managers\ComponentManager.cs" />
     <Compile Include="Managers\SceneManager.cs" />
     <Compile Include="Managers\SystemManager.cs" />
+    <Compile Include="PlayerComponent.cs" />
     <Compile Include="PlayerMoves.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

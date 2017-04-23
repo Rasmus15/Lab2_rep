@@ -25,13 +25,7 @@ namespace Series3D1.Systems
             }
             hmComp.Effect.World = hmComp.World;
             hmComp.Effect.FogEnabled = false;
-
-            //ändra till false om man vill se trianglarna
             hmComp.Effect.TextureEnabled = true;
-            //// draw those triangles
-            //RasterizerState state = new RasterizerState();
-            //state.FillMode = FillMode.WireFrame;
-            //graphicsDevice.RasterizerState = state;
 
         }
 
@@ -66,8 +60,6 @@ namespace Series3D1.Systems
                     texturePosition = new Vector2((float)x /25.5f, (float)y / 25.5f);
                     hmComp.Vertices[x + y * hmComp.Width] = new VertexPositionTexture(new Vector3(x, hmComp.heightMapData[x, y], -y), texturePosition);
                 }
-
-                // graphicsDevice.VertexDeclaration = new VertexDeclaration(graphicsDevice, VertexPositionTexture.VertexElements);
             }
         }
         public void SetHeights(HeightmapComponent hmComp)
@@ -94,13 +86,8 @@ namespace Series3D1.Systems
             SetEffects(hmComp);
             foreach (EffectPass pass in hmComp.Effect.CurrentTechnique.Passes)
             {
-
-                //pass.Begin();
                 pass.Apply();
                 spriteBatch.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionTexture>(PrimitiveType.TriangleList, hmComp.Vertices, 0, hmComp.Vertices.Length, hmComp.Indices, 0, hmComp.Indices.Length / 3);
-
-
-                // pass.End();
             }
         }
 

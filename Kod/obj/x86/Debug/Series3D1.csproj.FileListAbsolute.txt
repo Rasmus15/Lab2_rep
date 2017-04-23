@@ -187,3 +187,6 @@ D:\Plugg_År_3\Datorgrafik\Labbar\Lab2\Lab2_rep\Kod\bin\Windows\x86\Debug\SharpD
 D:\Plugg_År_3\Datorgrafik\Labbar\Lab2\Lab2_rep\Kod\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
 D:\Plugg_År_3\Datorgrafik\Labbar\Lab2\Lab2_rep\Kod\bin\Windows\x86\Debug\SharpDX.XInput.xml
 D:\Plugg_År_3\Datorgrafik\Labbar\Lab2\Lab2_rep\Kod\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+D:\Plugg_År_3\Datorgrafik\Labbar\Lab2\Lab2_rep\Kod\bin\Windows\x86\Debug\Content\House.xnb
+D:\Plugg_År_3\Datorgrafik\Labbar\Lab2\Lab2_rep\Kod\bin\Windows\x86\Debug\Content\Stone.xnb
+D:\Plugg_År_3\Datorgrafik\Labbar\Lab2\Lab2_rep\Kod\bin\Windows\x86\Debug\Content\Tree.xnb

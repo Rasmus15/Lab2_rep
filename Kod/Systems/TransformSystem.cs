@@ -26,25 +26,7 @@ namespace Series3D1.Systems
 
                 Quaternion rot = Quaternion.CreateFromYawPitchRoll(transComp.Rotation.Y, transComp.Rotation.X, transComp.Rotation.Z);
                 transComp.QRot *= rot;
-                CheckByTwoPi(rot.X);
-                CheckByTwoPi(rot.Y);
-                CheckByTwoPi(rot.Z);
                 transComp.CalcMatrix = Matrix.CreateScale(transComp.Scaling) * Matrix.CreateFromQuaternion(transComp.QRot) * Matrix.CreateTranslation(transComp.Position);
-            }
-        }
-        /// <summary>
-        /// Ingen aning om detta är rätt?
-        /// </summary>
-        /// <param name="axis"></param>
-        private void CheckByTwoPi(float axis)
-        {
-            if (MathHelper.TwoPi < axis)
-            {
-                axis -= MathHelper.TwoPi;
-            }
-            else if (-MathHelper.TwoPi > axis)
-            {
-                axis += MathHelper.TwoPi;
             }
         }
     }
