@@ -20,5 +20,6 @@ namespace Series3D1.Components
             Model = model;
             MeshMatrices = new Matrix[model.Bones.Count];
         }
+
     }
 }

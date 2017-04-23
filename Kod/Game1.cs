@@ -68,11 +68,14 @@ namespace Series3D1
             CameraComponent camComp = new CameraComponent(MathHelper.PiOver4, 1.0f, 1000.0f, 1.33f, new Vector3(0, 1, 10));
 
             Entity heightmap = new Entity();
+            SceneManager.Instance.AddEntityToScene("game", heightmap);
             ComponentManager.Instance.AddComponentToEntity(heightmap, new HeightmapComponent(Content.Load<Texture2D>("US_Canyon"), Content.Load<Texture2D>("mntn_canyon_d"), graphics.GraphicsDevice, 9));
             TransformComponent tc = new TransformComponent(Vector3.Zero, Vector3.Zero, new Vector3(1, 1, 1));
             ComponentManager.Instance.AddComponentToEntity(heightmap, tc);
 
             Entity player = new Entity();
+            SceneManager.Instance.AddEntityToScene("game", player);
+            ComponentManager.Instance.AddComponentToEntity(player, new Model)
 
             for (int i= 0; i < 10; i++)
             {
