@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Series3D1.Components
 {
-    class TransformComponent : IComponent
+    public class TransformComponent : IComponent
     {
 
         public Vector3 Position { get; set; }
@@ -15,7 +15,7 @@ namespace Series3D1.Components
         public Vector3 Scaling { get; set; }
         public Vector3 Movement { get; set; }
         public Matrix CalcMatrix { get; set; }
-        public Quaternion QuaternionMatrix { get; set; }
+        public Quaternion QRot { get; set; }
 
         public TransformComponent(Vector3 pos, Vector3 rot, Vector3 scal)
         {

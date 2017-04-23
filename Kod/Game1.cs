@@ -65,7 +65,7 @@ namespace Series3D1
         {
             SystemManager.Instance.ActiveCategory = "game";
             SceneManager.Instance.ActiveScene = "game";
-            CameraComponent camComp = new CameraComponent(MathHelper.PiOver4, 1.0f, 1000.0f, 1.33f);
+            CameraComponent camComp = new CameraComponent(MathHelper.PiOver4, 1.0f, 1000.0f, 1.33f, new Vector3(0, 1, 10));
             Entity chopper = new Entity();
             SceneManager.Instance.AddEntityToScene("game", chopper);
             ComponentManager.Instance.AddComponentToEntity(chopper, new TagComponent("chopper"));
@@ -73,12 +73,6 @@ namespace Series3D1
             TransformComponent tc = new TransformComponent(Vector3.Zero, Vector3.Zero, new Vector3(1, 1, 1));
             ComponentManager.Instance.AddComponentToEntity(chopper, tc);
             ComponentManager.Instance.AddComponentToEntity(chopper, camComp);
-
-            Entity heightmap = new Entity();
-            SceneManager.Instance.AddEntityToScene("game", heightmap);
-            ComponentManager.Instance.AddComponentToEntity(heightmap, new TagComponent("heightmap"));
-            ComponentManager.Instance.AddComponentToEntity(heightmap, new HeightmapComponent(Content.Load<Texture2D>("US_Canyon"), Content.Load<Texture2D>("mntn_canyon_d"), graphics.GraphicsDevice));
-            ComponentManager.Instance.AddComponentToEntity(heightmap, new TransformComponent(new Vector3(-400, -200, 0), new Vector3(), new Vector3()));
         }
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload

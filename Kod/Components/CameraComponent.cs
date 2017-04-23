@@ -16,9 +16,10 @@ namespace Series3D1.Components
         public float Ratio { get; set; }
         public Matrix View { get; set; }
         public Matrix Proj { get; set; }
+        public Vector3 CameraOffset {get; set; }
         #endregion
 
-        public CameraComponent(float fov, float nearPlane, float farPlane, float ratio)
+        public CameraComponent(float fov, float nearPlane, float farPlane, float ratio, Vector3 cameraOffset)
         {
             FOV = fov;
             NearPlane = nearPlane;
@@ -27,6 +28,8 @@ namespace Series3D1.Components
         
             View = Matrix.Identity;
             Proj = Matrix.Identity;
+
+            CameraOffset = cameraOffset;
         }
     }
 }

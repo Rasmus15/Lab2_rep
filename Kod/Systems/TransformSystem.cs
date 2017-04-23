@@ -25,23 +25,17 @@ namespace Series3D1.Systems
                 TransformComponent transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ent);
 
                 Quaternion rot = Quaternion.CreateFromYawPitchRoll(transComp.Rotation.Y, transComp.Rotation.X, transComp.Rotation.Z);
-                transComp.QuaternionMatrix *= rot;
+                transComp.QRot *= rot;
                 CheckByTwoPi(rot.X);
                 CheckByTwoPi(rot.Y);
                 CheckByTwoPi(rot.Z);
-                transComp.CalcMatrix = Matrix.CreateScale(transComp.Scaling) * Matrix.CreateFromQuaternion(rot) * Matrix.CreateTranslation(transComp.Position);
+                transComp.CalcMatrix = Matrix.CreateScale(transComp.Scaling) * Matrix.CreateFromQuaternion(transComp.QRot) * Matrix.CreateTranslation(transComp.Position);
             }
-            foreach(Entity ent in ComponentManager.Instance.GetAllEntitiesWithCertainComp<ModelComponent>())
-            {
-                ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(ent);
-                mc.Model.Bones[0].Transform = Matrix.CreateTranslation(mc.Model.Bones[0].Transform.Translation);
-                //rotera stora propellern
-                mc.Model.Bones[1].Transform = Matrix.CreateTranslation(mc.Model.Bones[1].Transform.Translation) * Matrix.CreateRotationY(mc.Model.Bones[1].Transform.Rotation.Y -0.6f);
-                //lilla
-                mc.Model.Bones[3].Transform = Matrix.CreateFromYawPitchRoll(5f, 0, 0) * mc.Model.Bones[3].Transform;
-            }
-
         }
+        /// <summary>
+        /// Ingen aning om detta är rätt?
+        /// </summary>
+        /// <param name="axis"></param>
         private void CheckByTwoPi(float axis)
         {
             if (MathHelper.TwoPi < axis)

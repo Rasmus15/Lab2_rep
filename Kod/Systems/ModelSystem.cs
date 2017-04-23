@@ -8,39 +8,108 @@ using Microsoft.Xna.Framework.Graphics;
 using Series3D1.Managers;
 using Series3D1.Components;
 using Series3D1.Entities;
+using Microsoft.Xna.Framework.Input;
 
 namespace Series3D1.Systems
 {
-    class ModelSystem : IDraw
+    class ModelSystem : IDraw, ILoadContent, IUpdate
     {
-        //public void LoadContent()
-        //{
-        //    Entity modEntity = ComponentManager.Instance.GetEntityWithTag("chopper", SceneManager.Instance.GetActiveSceneEntities());
-        //    ModelComponent modComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(modEntity);
-        //    foreach (ModelMesh mm in modComp.Model.Meshes)
-        //    {
-        //        foreach (Effect e in mm.Effects)
-        //        {
-        //            IEffectLights ieLight = e as IEffectLights;
-        //            if (ieLight != null)
-        //            {
-        //                ieLight.EnableDefaultLighting();
-        //            }
-
-        //        }
-        //    }
-        //}
-
-        private void DrawModelViaMeshes(TransformComponent transcomp, ModelComponent mComp, Matrix proj, Matrix view)
+        ModelComponent modComp;
+        CameraComponent cameraComponent;
+        TransformComponent transComp;
+        public void LoadContent()
         {
-            foreach (ModelMesh mesh in mComp.Model.Meshes)
+            Entity Cament = ComponentManager.Instance.GetEntityWithTag("camera", SceneManager.Instance.GetActiveSceneEntities());
+            Entity Chopent = ComponentManager.Instance.GetEntityWithTag("chopper", SceneManager.Instance.GetActiveSceneEntities());
+
+            transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(Chopent);
+            modComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(Chopent);
+            cameraComponent = ComponentManager.Instance.GetEntityComponent<CameraComponent>(Cament);
+        }
+        public void Movement(GameTime gameTime)
+        {
+            float speed = gameTime.ElapsedGameTime.Milliseconds / 500.0f * 1.0f;
+
+
+            KeyboardState key = Keyboard.GetState();
+            foreach (Keys k in key.GetPressedKeys())
+            {
+                switch (k)
+                {
+                    case Keys.A:
+                        transComp.Position += new Vector3(-2f, 0, 0);
+                        break;
+                    case Keys.D:
+                        transComp.Position += new Vector3(2f, 0, 0);
+                        break;
+                    case Keys.W:
+                        transComp.Position += new Vector3(0, 2f, 0);
+                        break;
+                    case Keys.S:
+                        transComp.Position += new Vector3(0, -2f, 0);
+                        break;
+                    case Keys.F:
+                        transComp.Position += new Vector3(0, 0, 2f);
+                        break;
+                    case Keys.R:
+                        transComp.Position += new Vector3(0, 0, -2f);
+                        break;
+                    case Keys.Q:
+                        transComp.Rotation += new Vector3(-0.02f, 0, 0);
+                        break;
+                    case Keys.E:
+                        transComp.Rotation += new Vector3(0.02f, 0, 0);
+                        break;
+                    case Keys.G:
+                        transComp.Rotation += new Vector3(0, -0.02f, 0);
+                        break;
+                    case Keys.T:
+                        transComp.Rotation += new Vector3(0, 0.02f, 0);
+                        break;
+                    case Keys.C:
+                        transComp.Rotation *= new Vector3(0, 0, -0.02f);
+                        break;
+                    case Keys.V:
+                        transComp.Rotation *= new Vector3(0, 0, 0.02f);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private Matrix GetParentTransform(ModelComponent m, ModelBone mb)
+        {
+            return (mb == m.Model.Root) ? mb.Transform :
+                mb.Transform * GetParentTransform(m, mb.Parent);
+        }
+
+        private float GetMaxMeshRadius(ModelComponent m)
+        {
+            float radius = 0.0f;
+            foreach (ModelMesh mesh in m.Model.Meshes)
+            {
+                if (mesh.BoundingSphere.Radius > radius)
+                {
+                    radius = mesh.BoundingSphere.Radius;
+                }
+            }
+            return radius;
+        }
+        public void DrawModel(ModelComponent mc, GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            Matrix[] chopperTransforms = new Matrix[mc.Model.Bones.Count];
+            mc.Model.CopyAbsoluteBoneTransformsTo(chopperTransforms);
+            float radius = GetMaxMeshRadius(mc);
+            foreach (ModelMesh mesh in mc.Model.Meshes)
             {
                 foreach (BasicEffect e in mesh.Effects)
                 {
-                    HeightmapComponent hc = ComponentManager.Instance.GetEntityComponent<HeightmapComponent>(ComponentManager.Instance.GetEntityWithTag("heightmap", SceneManager.Instance.GetActiveSceneEntities()));
-                    e.World = mComp.MeshMatrices[mesh.ParentBone.Index] * transcomp.CalcMatrix * hc.World;
-                    e.Projection = proj;
-                    e.View = view;
+                    e.World = GetParentTransform(mc, mesh.ParentBone) * transComp.CalcMatrix;
+
+                    e.View = cameraComponent.View;
+                    e.Projection = cameraComponent.Proj;
+
                     e.EnableDefaultLighting();
                     e.PreferPerPixelLighting = true;
                     foreach (EffectPass pass in e.CurrentTechnique.Passes)
@@ -52,47 +121,21 @@ namespace Series3D1.Systems
             }
         }
 
-        private Matrix GetParentTransform(Model m, ModelBone mb)
-        {
-            return (mb == m.Root) ? mb.Transform :
-                mb.Transform * GetParentTransform(m, mb.Parent);
-        }
-
-        private void DrawModel(Model m, float radius, Matrix proj, Matrix view)
-        {
-            m.Draw(Matrix.CreateScale(1.0f / radius), view, proj);
-        }
-
-        private float GetMaxMeshRadius(Model m)
-        {
-            float radius = 0.0f;
-            foreach (ModelMesh mesh in m.Meshes)
-            {
-                if (mesh.BoundingSphere.Radius > radius)
-                {
-                    radius = mesh.BoundingSphere.Radius;
-                }
-            }
-            return radius;
-        }
-
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            List<Entity> entities = ComponentManager.Instance.GetAllEntitiesWithCertainComp<ModelComponent>();
-            foreach (Entity ent in entities)
-            {
-                ModelComponent modelComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(ent);
-                CameraComponent camComp = ComponentManager.Instance.GetEntityComponent<CameraComponent>(ent);
-                TransformComponent transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ent);
-                modelComp.Model.CopyAbsoluteBoneTransformsTo(modelComp.MeshMatrices);
-                DrawModelViaMeshes(transComp, modelComp, camComp.Proj, camComp.View);
-            }
-            spriteBatch.GraphicsDevice.Clear(Color.CornflowerBlue);   
+            Entity modEntity = ComponentManager.Instance.GetEntityWithTag("chopper", SceneManager.Instance.GetActiveSceneEntities());
+            ModelComponent modComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(modEntity);
+            DrawModel(modComp, gameTime, spriteBatch);
         }
 
         public int Order()
         {
             return 2;
+        }
+
+        public void Update(GameTime gametime)
+        {
+            Movement(gametime);
         }
     }
 }
