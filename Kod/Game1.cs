@@ -72,6 +72,8 @@ namespace Series3D1
             TransformComponent tc = new TransformComponent(Vector3.Zero, Vector3.Zero, new Vector3(1, 1, 1));
             ComponentManager.Instance.AddComponentToEntity(heightmap, tc);
 
+            Entity player = new Entity();
+
             for (int i= 0; i < 10; i++)
             {
                 Entity house = new Entity();
