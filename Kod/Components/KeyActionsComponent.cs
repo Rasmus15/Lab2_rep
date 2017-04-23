@@ -8,8 +8,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Series3D1.Components
 {
-    class KeysPressedComponent : IComponent
+    class KeyActionsComponent : IComponent
     {
-        public List<KeyValuePair<Keys, IAction>> KeyPressed { get; set; }
+        public Dictionary<Keys, IAction> KeyAction{ get; set; }
+
+        public KeyActionsComponent(Dictionary<Keys, IAction> actions)
+        {
+            KeyAction = actions;
+        }
     }
 }

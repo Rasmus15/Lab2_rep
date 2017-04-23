@@ -23,15 +23,18 @@ namespace Series3D1.Systems
         {
             Vector3 tempMovement = Vector3.Zero;
             Vector3 tempRotation = Vector3.Zero;
-            
-            foreach(Entity ent in ComponentManager.Instance.GetAllEntitiesWithCertainComp<KeysPressedComponent>())
+            Keyboard.GetState().GetPressedKeys();
+            foreach(Entity ent in ComponentManager.Instance.GetAllEntitiesWithCertainComp<KeyActionsComponent>())
             {
-                KeysPressedComponent keys = ComponentManager.Instance.GetEntityComponent<KeysPressedComponent>(ent);
+                
+                KeyActionsComponent keys = ComponentManager.Instance.GetEntityComponent<KeyActionsComponent>(ent);
                 TagComponent tag = ComponentManager.Instance.GetEntityComponent<TagComponent>(ent);
-                foreach (KeyValuePair<Keys, IAction> action in keys.KeyPressed)
+                foreach (Keys key in Keyboard.GetState().GetPressedKeys())
                 {
-                    action.Value.PerformAction(action.Key, tag.ID);
-                } 
+                    KeyValuePair<Keys, IAction> action = keys.KeyAction.FirstOrDefault(k => k.Key == key);
+                    if (!action.Equals(default(KeyValuePair<Keys, IAction>)))
+                        action.Value.PerformAction(key, tag.ID);
+                }
             }
         }
     }

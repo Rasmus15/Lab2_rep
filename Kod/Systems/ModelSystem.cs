@@ -12,72 +12,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Series3D1.Systems
 {
-    class ModelSystem : IDraw, ILoadContent, IUpdate
+    class ModelSystem : IDraw
     {
-        ModelComponent modComp;
-        CameraComponent cameraComponent;
-        TransformComponent transComp;
-        public void LoadContent()
-        {
-            Entity Cament = ComponentManager.Instance.GetEntityWithTag("camera", SceneManager.Instance.GetActiveSceneEntities());
-            Entity Chopent = ComponentManager.Instance.GetEntityWithTag("chopper", SceneManager.Instance.GetActiveSceneEntities());
-
-            transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(Chopent);
-            modComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(Chopent);
-            cameraComponent = ComponentManager.Instance.GetEntityComponent<CameraComponent>(Cament);
-        }
-        public void Movement(GameTime gameTime)
-        {
-            float speed = gameTime.ElapsedGameTime.Milliseconds / 500.0f * 1.0f;
-
-
-            KeyboardState key = Keyboard.GetState();
-            foreach (Keys k in key.GetPressedKeys())
-            {
-                switch (k)
-                {
-                    case Keys.A:
-                        transComp.Position += new Vector3(-2f, 0, 0);
-                        break;
-                    case Keys.D:
-                        transComp.Position += new Vector3(2f, 0, 0);
-                        break;
-                    case Keys.W:
-                        transComp.Position += new Vector3(0, 2f, 0);
-                        break;
-                    case Keys.S:
-                        transComp.Position += new Vector3(0, -2f, 0);
-                        break;
-                    case Keys.F:
-                        transComp.Position += new Vector3(0, 0, 2f);
-                        break;
-                    case Keys.R:
-                        transComp.Position += new Vector3(0, 0, -2f);
-                        break;
-                    case Keys.Q:
-                        transComp.Rotation += new Vector3(-0.02f, 0, 0);
-                        break;
-                    case Keys.E:
-                        transComp.Rotation += new Vector3(0.02f, 0, 0);
-                        break;
-                    case Keys.G:
-                        transComp.Rotation += new Vector3(0, -0.02f, 0);
-                        break;
-                    case Keys.T:
-                        transComp.Rotation += new Vector3(0, 0.02f, 0);
-                        break;
-                    case Keys.C:
-                        transComp.Rotation *= new Vector3(0, 0, -0.02f);
-                        break;
-                    case Keys.V:
-                        transComp.Rotation *= new Vector3(0, 0, 0.02f);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
         private Matrix GetParentTransform(ModelComponent m, ModelBone mb)
         {
             return (mb == m.Model.Root) ? mb.Transform :
@@ -96,26 +32,32 @@ namespace Series3D1.Systems
             }
             return radius;
         }
-        public void DrawModel(ModelComponent mc, GameTime gameTime, SpriteBatch spriteBatch)
+        public void DrawModel(GameTime gameTime)
         {
-            Matrix[] chopperTransforms = new Matrix[mc.Model.Bones.Count];
-            mc.Model.CopyAbsoluteBoneTransformsTo(chopperTransforms);
-            float radius = GetMaxMeshRadius(mc);
-            foreach (ModelMesh mesh in mc.Model.Meshes)
+            CameraComponent camComp = ComponentManager.Instance.GetEntityComponent<CameraComponent>(ComponentManager.Instance.GetEntityWithTag("camera", SceneManager.Instance.GetActiveSceneEntities()));
+            foreach(Entity ent in ComponentManager.Instance.GetAllEntitiesWithCertainComp<ModelComponent>())
             {
-                foreach (BasicEffect e in mesh.Effects)
+                ModelComponent modComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(ent);
+                TransformComponent transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ent);
+                Matrix[] chopperTransforms = new Matrix[modComp.Model.Bones.Count];
+                modComp.Model.CopyAbsoluteBoneTransformsTo(chopperTransforms);
+                float radius = GetMaxMeshRadius(modComp);
+                foreach (ModelMesh mesh in modComp.Model.Meshes)
                 {
-                    e.World = GetParentTransform(mc, mesh.ParentBone) * transComp.CalcMatrix;
-
-                    e.View = cameraComponent.View;
-                    e.Projection = cameraComponent.Proj;
-
-                    e.EnableDefaultLighting();
-                    e.PreferPerPixelLighting = true;
-                    foreach (EffectPass pass in e.CurrentTechnique.Passes)
+                    foreach (BasicEffect e in mesh.Effects)
                     {
-                        pass.Apply();
-                        mesh.Draw();
+                        e.World = GetParentTransform(modComp, mesh.ParentBone) * transComp.CalcMatrix;
+
+                        e.View = camComp.View;
+                        e.Projection = camComp.Proj;
+
+                        e.EnableDefaultLighting();
+                        e.PreferPerPixelLighting = true;
+                        foreach (EffectPass pass in e.CurrentTechnique.Passes)
+                        {
+                            pass.Apply();
+                            mesh.Draw();
+                        }
                     }
                 }
             }
@@ -123,19 +65,12 @@ namespace Series3D1.Systems
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            Entity modEntity = ComponentManager.Instance.GetEntityWithTag("chopper", SceneManager.Instance.GetActiveSceneEntities());
-            ModelComponent modComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(modEntity);
-            DrawModel(modComp, gameTime, spriteBatch);
+            DrawModel(gameTime);
         }
 
         public int Order()
         {
             return 2;
-        }
-
-        public void Update(GameTime gametime)
-        {
-            Movement(gametime);
         }
     }
 }

@@ -49,6 +49,7 @@ namespace Series3D1.Managers
                     IUpdateDict.Add(category, new Dictionary<Type, ISystem>());
                 }
                 IUpdateDict[category].Add(system.GetType(), system);
+
             }
             if (system is ILoadContent)
             {
@@ -57,6 +58,7 @@ namespace Series3D1.Managers
                     ILoadContentDict.Add(category, new Dictionary<Type, ISystem>());
                 }
                 ILoadContentDict[category].Add(system.GetType(), system);
+                ILoadContentDict[category].OrderBy(pair => pair.Value.Order());
             }
         }
 

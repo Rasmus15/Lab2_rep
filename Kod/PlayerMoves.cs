@@ -17,18 +17,19 @@ namespace Series3D1
         private static float MOVEMENT = 2.0f;
         public void PerformAction(Keys key, String entityName)
         {
+
             List<Entity> entities = SceneManager.Instance.GetActiveSceneEntities();
+            CameraComponent c = ComponentManager.Instance.GetEntityComponent<CameraComponent>(ComponentManager.Instance.GetEntityWithTag("camera", entities));
             switch (entityName)
             {
                 case "player":
                     Entity ent = ComponentManager.Instance.GetEntityWithTag("player", entities);
                     TransformComponent t = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ent);
-                    CameraComponent c = ComponentManager.Instance.GetEntityComponent<CameraComponent>(ent);
                     PlayerComponent p = ComponentManager.Instance.GetEntityComponent<PlayerComponent>(ent);
                     switch (key)
                     {
                         case Keys.W:
-                            t.Position = p.CharDirectionNormal * MOVEMENT;
+                            t.Position += p.CharDirectionNormal * MOVEMENT;
                             break;
                         case Keys.A:
                             t.Position = p.CharDirectionNormal ;
@@ -46,10 +47,15 @@ namespace Series3D1
                             t.Position = new Vector3(MOVEMENT, 0, 0);
                             break;
                     }
+                    c.LookAt = t.Position;
                     break;
                 default:
                     break;
             }
+        }
+        public void WalkingMotion(ModelComponent mComp)
+        {
+
         }
     }
 }

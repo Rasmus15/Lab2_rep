@@ -17,7 +17,7 @@ namespace Series3D1.Systems
         //method for getting out textures
         private void SetEffects(HeightmapComponent hmComp)
         {
-            foreach(Entity ent in ComponentManager.Instance.GetAllEntitiesWithCertainComp<CameraComponent>())
+            foreach (Entity ent in ComponentManager.Instance.GetAllEntitiesWithCertainComp<CameraComponent>())
             {
                 CameraComponent camComp = ComponentManager.Instance.GetEntityComponent<CameraComponent>(ent);
                 hmComp.Effect.View = camComp.View;
@@ -57,7 +57,7 @@ namespace Series3D1.Systems
             {
                 for (int y = 0; y < hmComp.Height; y++)
                 {
-                    texturePosition = new Vector2((float)x /25.5f, (float)y / 25.5f);
+                    texturePosition = new Vector2((float)x / 25.5f, (float)y / 25.5f);
                     hmComp.Vertices[x + y * hmComp.Width] = new VertexPositionTexture(new Vector3(x, hmComp.heightMapData[x, y], -y), texturePosition);
                 }
             }
@@ -79,27 +79,31 @@ namespace Series3D1.Systems
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            Entity hmEntity = ComponentManager.Instance.GetEntityWithTag("heightmap", SceneManager.Instance.GetActiveSceneEntities());
-            HeightmapComponent hmComp = ComponentManager.Instance.GetEntityComponent<HeightmapComponent>(hmEntity);
-
-            hmComp.Effect.CurrentTechnique.Passes[0].Apply();
-            SetEffects(hmComp);
-            foreach (EffectPass pass in hmComp.Effect.CurrentTechnique.Passes)
+            foreach (Entity ent in ComponentManager.Instance.GetAllEntitiesWithCertainComp<HeightmapComponent>())
             {
-                pass.Apply();
-                spriteBatch.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionTexture>(PrimitiveType.TriangleList, hmComp.Vertices, 0, hmComp.Vertices.Length, hmComp.Indices, 0, hmComp.Indices.Length / 3);
+                HeightmapComponent hmComp = ComponentManager.Instance.GetEntityComponent<HeightmapComponent>(ent);
+
+                hmComp.Effect.CurrentTechnique.Passes[0].Apply();
+                SetEffects(hmComp);
+                foreach (EffectPass pass in hmComp.Effect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+                    spriteBatch.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionTexture>(PrimitiveType.TriangleList, hmComp.Vertices, 0, hmComp.Vertices.Length, hmComp.Indices, 0, hmComp.Indices.Length / 3);
+                }
             }
         }
 
         public void LoadContent()
         {
-            Entity hmEntity = ComponentManager.Instance.GetEntityWithTag("heightmap", SceneManager.Instance.GetActiveSceneEntities());
-            HeightmapComponent hmComp = ComponentManager.Instance.GetEntityComponent<HeightmapComponent>(hmEntity);
-            TransformComponent transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(hmEntity);
-            hmComp.World = Matrix.CreateTranslation(transComp.Position);
-            SetHeights(hmComp);
-            SetVertices(hmComp);
-            SetIndices(hmComp);
+            foreach (Entity ent in ComponentManager.Instance.GetAllEntitiesWithCertainComp<HeightmapComponent>())
+            {
+                HeightmapComponent hmComp = ComponentManager.Instance.GetEntityComponent<HeightmapComponent>(ent);
+                TransformComponent transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ent);
+                hmComp.World = Matrix.CreateTranslation(transComp.Position);
+                SetHeights(hmComp);
+                SetVertices(hmComp);
+                SetIndices(hmComp);
+            }
         }
 
         public int Order()

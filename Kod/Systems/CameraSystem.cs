@@ -21,16 +21,14 @@ namespace Series3D1.Systems
 
         public void Update(GameTime gametime)
         {
-            
             foreach(Entity ent in ComponentManager.Instance.GetAllEntitiesWithCertainComp<CameraComponent>())
             {
                 CameraComponent camComp = ComponentManager.Instance.GetEntityComponent<CameraComponent>(ent);
                 TransformComponent transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ent);
-                if (ComponentManager.Instance.CheckEntityHasComponent<ModelComponent>(ent))
-                {
-                    camComp.View = Matrix.CreateLookAt(transComp.Position + camComp.CameraOffset, transComp.Position, Vector3.Up);
-                    camComp.Proj = Matrix.CreatePerspectiveFieldOfView(camComp.FOV, camComp.Ratio, camComp.NearPlane, camComp.FarPlane);
-                }
+                Vector3 lookAtOffset = Vector3.Transform(camComp.CameraOffset, transComp.CalcMatrix);
+                transComp.Position = camComp.LookAt + camComp.CameraOffset;
+                camComp.View = Matrix.CreateLookAt(transComp.Position, camComp.LookAt, Vector3.Up);
+                camComp.Proj = Matrix.CreatePerspectiveFieldOfView(camComp.FOV, camComp.Ratio, camComp.NearPlane, camComp.FarPlane);
             }
         }
 

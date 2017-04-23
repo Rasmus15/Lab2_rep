@@ -17,18 +17,18 @@ namespace Series3D1.Components
         public Matrix View { get; set; }
         public Matrix Proj { get; set; }
         public Vector3 CameraOffset {get; set; }
+        public Vector3 LookAt { get; set; }
         #endregion
 
-        public CameraComponent(float fov, float nearPlane, float farPlane, float ratio, Vector3 cameraOffset)
+        public CameraComponent(float fov, float nearPlane, float farPlane, float ratio, Vector3 cameraOffset, Vector3 lookat)
         {
             FOV = fov;
             NearPlane = nearPlane;
             FarPlane = farPlane;
             Ratio = ratio;
-        
-            View = Matrix.Identity;
-            Proj = Matrix.Identity;
+            LookAt = lookat;
 
+            View = Matrix.Identity;
             CameraOffset = cameraOffset;
         }
     }
